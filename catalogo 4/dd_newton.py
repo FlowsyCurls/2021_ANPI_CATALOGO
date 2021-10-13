@@ -1,8 +1,4 @@
 from sympy import *
-import numpy as np
-import fractions
-init_printing(use_latex=true)
-
 
 # Ejemplo
 def ejemplo():
@@ -22,7 +18,7 @@ def ejemplo():
 def dd_newton(xk, yk):
     n = len(xk)-1          ## Grado maximo del polinomio de interpolacion.
     m = n+1
-    Dd = np.zeros((m, m))  ## Generar matriz de ceros para almacenar diferencias divididas.
+    Dd = zeros(m, m)  ## Generar matriz de ceros para almacenar diferencias divididas.
     Dd[:,0] = yk           ## La columna 0 corresponde a los valores de y. Por la regla f(xi) =yi
     ## Se inicia la recursion en la columna 2, puesto que  ya fue asignada la 1.
     for j in range(1, m):
