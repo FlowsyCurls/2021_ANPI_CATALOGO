@@ -5,9 +5,9 @@ function ejemplo
      
      f = 'sin((pi*x)/2)';
      ptos = [-1 0 1 2];    % Valores de soporte en Intervalo [-1, 2]
-     valor = 0.54;
      printf("La cota de error del polinomio de interpolacion de esta funcion\
      \nen el intervalo de %d a %d es de:\n\n", ptos(1), ptos(end));
+     
      cota = cota_poly_inter(f, ptos)
 end
 

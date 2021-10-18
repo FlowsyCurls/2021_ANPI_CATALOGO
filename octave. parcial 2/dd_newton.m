@@ -17,10 +17,7 @@ function DD =dd_newton(x,y)
      DD(:,1)=y;               % La columna 1 corresponde a los valores de y. Por la regla f(xi) =yi
      % Se inicia la recursion en la columna 2, puesto que  ya fue asignada la 1.
      for j=2:n+1 
-          display("Columna");   j-1
           for i=j:n+1
-              % i-1
-              % j-1
                % Por la regla:
                % f( xi, x[i+1], .... , x[i+j] ) =   (   f( x[i+1], .... , x[i+j] )  -  f( xi, x[i+1], .... , x[i+j-1])   ) / (x[i]  - x[i-j])
                DD(i,j) = [ DD(i,j-1) - DD(i-1,j-1) ] / [ x(i) - x(i-j+1) ];

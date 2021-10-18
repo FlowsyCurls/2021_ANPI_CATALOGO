@@ -1,7 +1,8 @@
 function ejemplo()
      clc; clear;
      pkg load symbolic;
-     
+
+     warning('off','all');
      xv = [ 1, 2, 4];
      yv = [1, 0.5, 0.25];
      s=traz_lineal(xv, yv);

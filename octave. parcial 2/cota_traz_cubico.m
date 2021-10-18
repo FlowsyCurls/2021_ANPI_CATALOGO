@@ -30,6 +30,6 @@ function cota = cota_traz_cubico(f, ptos)
      fs_aux = -1*abs(df4_s);
      fn_aux = matlabFunction(fs_aux); 
      x_max = fminbnd(fn_aux, a, b);     % Alpha.
-     alpha = df4_n(x_max)
+     alpha = df4_n(x_max);
      cota = (5*h^4/384)*alpha;          % Cota.
 end
