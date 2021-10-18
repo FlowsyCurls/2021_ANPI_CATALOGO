@@ -16,6 +16,25 @@ def ejemplo():
 
 # Metodo de Lagrange
 def dd_newton(xk, yk):
+
+    """
+        Esta funcion utiliza el metodo de diferencias divididas
+        de Newton para realizar una aproximacion del polinomio
+        de interpolacion que pasa por los puntos (x0, y0),...,
+        (xn, yn) recibidos como parametro.
+
+    Sintaxis: dd_newton(xk, yk)
+
+    Parametros Iniciales: 
+        xk : es el vector de preimagenes de cada par ordenado.
+        yk : es el vector de imagenes de cada par ordenado.
+
+    Parametros Salida: 
+        Dd: es la obtenido a partir de diferencias divididas de 
+        Newton generada a partir del metodo.
+        p: es el polinomio de forma simbolica obtenido a partir
+           del metodo de diferencias divididas de Newton.
+    """
     n = len(xk)-1          ## Grado maximo del polinomio de interpolacion.
     m = n+1
     Dd = zeros(m, m)  ## Generar matriz de ceros para almacenar diferencias divididas.

@@ -12,6 +12,21 @@ def ejemplo():
 
 # Metodo de Lagrange
 def lagrange(xk, yk):
+    """
+        Esta funcion utiliza el metodo de Lagrange para realizar una 
+        aproximacion del polinomio de interpolacion que pasa por los 
+        puntos (x0, y0),..., (xn, yn) recibidos como parametro.
+
+    Sintaxis: lagrange(xk, yk)
+
+    Parametros Iniciales: 
+        xk : es el vector de preimagenes de cada par ordenado.
+        yk : es el vector de imagenes de cada par ordenado.
+
+    Parametros Salida: 
+        p: es el polinomio de forma simbolica obtenido a partir
+           del metodo de Lagrange.
+    """
     x = symbols('x')   ## Variable simbolica.
     
     n = len(xk)-1      ## Grado maximo del polinomio de interpolacion.
@@ -22,8 +37,10 @@ def lagrange(xk, yk):
     p = expand(p)
     return p
 
-# Funcion que calcula el Lk para un k especifico.
 def do_Lk(xk,k):
+    """
+        Funcion que calcula el Lk para un k especifico.
+    """
     x = symbols('x')        ## Variable simbolica.
     # k= 0,1,2,3,...,n
     n = len(xk)-1           ## Grado maximo del polinomio de interpolacion.
