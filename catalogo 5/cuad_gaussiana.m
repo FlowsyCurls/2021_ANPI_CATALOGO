@@ -1,12 +1,12 @@
-function prueba
+function ejemplo_cuad_gaussiana
   clc;
   clear;
   format long;
   
-  f = 'exp(x)*cos(x)';
-  n = 3;
-  a = -1;
-  b = 1;
+  f = 'ln(x)';
+  n = 2;
+  a = 2;
+  b = 5;
   
   [xk error] = cuad_gaussiana(f,n,a,b)
  
@@ -17,18 +17,25 @@ function [xk error] = cuad_gaussiana(f,n,a,b)
   pkg load symbolic
   warning('off','all');
   
+  syms x;
+  
   xk = 0;
   error = 0;
-  
-  f1=matlabFunction(sym(f));
+
+  fs=sym(f);
+  y=((b-a)*x+(b+a))/2;
+  gs=(b-a)/2*subs(fs,x,y);
+  gn=matlabFunction(gs);
   
   [x, w]=ceros_pesos_cuad_gauss(n);
   
-  for i=1:n
+  for i=1:n  
 
-    xk += w(i)*f1(x(i));
+    xk += w(i)*gn(x(i)); % Cuadratura gaussiana
     
   endfor
+  
+  
 end
 
 function [x, w]=ceros_pesos_cuad_gauss(n)
