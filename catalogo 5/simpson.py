@@ -49,16 +49,20 @@ def simpson(f,a,b):
     c = b-a
     aprox = (c/6) * ( fn(a) + 4*fn((a+b)/2) + fn(b) )
     
-    ## Cota del error de la aproximacion.
-    d = 4 # indice cuatro por 4ta derivada.
-    f4_s =  fs.diff(x, d)                      ## 4ta derivada simbolica.
-    f4_n = lambdify(x, f4_s)                   ## 4ta derivada numerica.
-
-    ## min{ -f } en [a,b] -> max{ f } en [a,b].
-    fs_aux = -1*abs(f4_s)                      ## -f simbolica.
-    fn_aux = lambdify(x, fs_aux)               ## -f numerica.
+    # 1. Calculo de la cuarta derivada.
+    f4_s = Abs(fs.diff(x, 4))   ## d4 simbolica.
+    f4_n = lambdify(x, f4_s)   ## d4 numerica.
+    
+    # 2. Calculo de las funciones auxiliares: 
+    # min{ -f } en [a,b] -> max{ f } en [a,b].
+    fs_aux = -1*Abs(f4_s)   ## -f simbolica.
+    fn_aux = lambdify(x, fs_aux)   ## -f numerica.
+    
+    # 3. Calculo de alpha_max.
     x_max = optimize.fminbound(fn_aux, a, b)   ## maximo.
-    alpha = abs(f4_n(x_max))                        ## alpha.
+    alpha = f4_n(x_max)   ## alpha.
+
+    # 4. Calculo de la cota de error.
     cota = ( ( c**5 )/2880 )*alpha           ## cota.
     return aprox, cota
 
