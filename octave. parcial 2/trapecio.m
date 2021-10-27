@@ -12,8 +12,8 @@ function ejemplo
      
      printf(
      "El valor aproximado de la funcion \'f(x) = %s\' utilizando el metodo del\
-     \nTrapecio en el intervalo de %d a %d es de: %d\
-     \n\nLa cota de error correspondiente a esta aproximacion es: %d\n\n",
+     \nTrapecio en el intervalo de %d a %d es de: \n%d\
+     \n\nLa cota de error correspondiente a esta aproximacion es: \n%d\n\n",
      f, a, b, aprox, error
      );
 endfunction
@@ -48,14 +48,21 @@ function [aprox, cota] = trapecio(f, a, b)
      # Aproximacion.
      aprox=((b-a)/2)*(fn(a)+fn(b));  # calculo de la integral aproximada.
      
-     # Cota del error de la aproximacion.
-     d = 2; # Segunda derivada.
-     f2_s = diff(fs, d);   # segunda derivada simbolica.
-     f2_n = matlabFunction(f2_s);   # segunda derivada numerica.
-     # min{ -f } en [a,b] -> max{ f } en [a,b].     
-     fs_aux = -1*abs(f2_s);   # -f simbolica.
+     # Cota del error.
+     
+     % 1. Calculo de la segunda derivada.
+     f2_s = abs(diff(fs, 2));   # d2 simbolica.
+     f2_n = matlabFunction(f2_s);   # d2 numerica.
+     
+     % 2. Calculo de las funciones auxiliares: 
+     % min{ -f } en [a,b] -> max{ f } en [a,b].     
+     fs_aux = -1*f2_s;   # -f simbolica.
      fn_aux = matlabFunction(fs_aux);   # -f numerica.
+     
+     % 3. Calculo de alpha_max.
      x_max = fminbnd(fn_aux, a, b);   # maximo.
-     alpha = abs(f2_n(x_max));   # alpha.
+     alpha = f2_n(x_max);   # alpha max.
+
+     % 4. Calculo de la cota de error.
      cota=(((b-a)^3)/12)*alpha;  # cota.
 endfunction

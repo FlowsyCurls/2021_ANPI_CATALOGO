@@ -3,29 +3,31 @@ function ejemplo
      # Previos
      clc; clear;
      pkg load symbolic
+     warning('off','all');
      
      # Parametros
-     f='ln(x)';
+     f='log(x)';
      a=2;
      b=5;
-     [aprox, error] =  simpson(f,a,b);
+     num_punt = 800;
+     [aprox, error]=trapecio_compuesto(f, num_punt, a, b);
      
-     display("\n* METODO DE SIMPSON\n");
      printf(
-     "El valor aproximado de \'f(x) = %s\' utilizando el metodo de Simpson\
-     \nen el intervalo de %d a %d es de: \n%d\n\
-     \nLa cota de error correspondiente a esta aproximacion es: \n%d\n\n",
-     f, a, b, aprox, error
+     "El valor aproximado de la funcion \'f(x) = %s\' utilizando el metodo del Trapecio\
+     \nCompuesto en el intervalo de %d a %d con un total de %d puntos es de: \n%d\
+     \n\nLa cota de error correspondiente a esta aproximacion es: \n%d\n\n",
+     f, a, b, num_punt, aprox, error
+     
      );
 endfunction
 
-function [aprox, cota] = simpson(f, a, b)
+function [I, cota] = trapecio_compuesto(f, num_punt, a, b)
 #{
     Esta funcion aproxima el valor para la integral definida de f en el 
     intervalo [a,b] y calcula el error que se genera al realizar la aproximacion
-    utilizando la Regla de Simpson (a traves de un polinomio de grado 2).
+    utilizando la Regla del Trapecio Compuesto.
     
-    Sintaxis:  simpson(f, a, b)
+    Sintaxis:  trapecio_compuesto(f, a, b)
     
     Parametros Iniciales: 
         f : una cadena de caracteres (string) que representa
@@ -46,27 +48,40 @@ function [aprox, cota] = simpson(f, a, b)
      fs=sym(f);  # funcion simbolica.
      fn = matlabFunction(fs);  # funcion numerica.
      
-     # Aproximacion.
-     c = b-a;
-     aprox = (c/6) * ( fn(a) + 4*fn((a+b)/2) + fn(b) );
+     # Aproximacion utilizando el metodo del Trapecio Compuesto.
+     
+     % 1. Calculo de h.
+     h=(b-a)/(num_punt-1);
+     
+     % 2. Calcular el vector de puntos. 
+     xv=linspace(a, b, num_punt);
+     
+     % 3. Realizar la aproximacion de la integral.
+     I = 0;
+     for i=1:num_punt-1
+          ai = xv(i);
+          bi = xv(i+1);
+          fai = fn(ai);
+          fbi = fn(bi);
+          I+=(bi-ai)*(fai+fbi)/2;
+     end
      
      # Cota del error.
      
-     % 1. Calculo de la cuarta derivada.
-     f4_s = abs(diff(fs, 4));   # d4 simbolica.
-     f4_n = matlabFunction(f4_s);   # d4 numerica.
+     % 1. Calculo de la segunda derivada.
+     f2_s = abs(diff(fs, 2));   # d2 simbolica.
+     f2_n = matlabFunction(f2_s);   # d2 numerica.
      
      % 2. Calculo de las funciones auxiliares: 
      % min{ -f } en [a,b] -> max{ f } en [a,b].     
-     fs_aux = -1*f4_s;   # -f simbolica.
+     fs_aux = -1*abs(f2_s);   # -f simbolica.
      fn_aux = matlabFunction(fs_aux);   # -f numerica.
      
      % 3. Calculo de alpha_max.
      x_max = fminbnd(fn_aux, a, b);   # maximo.
-     alpha = f4_n(x_max);   # alpha max.
-
-     % 4. Calculo de la cota de error.
-     cota = ( ( c**5 )/2880 )*alpha; # cota.
+     alpha = f2_n(x_max)   # alpha max.
      
-
+     % 4. Calculo de la cota de error.
+     cota=(((b-a)*h^2)/12)*alpha;  # cota.
+     
 endfunction
