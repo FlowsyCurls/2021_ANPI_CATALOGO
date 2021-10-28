@@ -8,19 +8,42 @@ function ejemplo_cuad_gaussiana
   a = 2;
   b = 5;
   
-  [xk error] = cuad_gaussiana(f,n,a,b)
+  [I cota] = cuad_gaussiana(f,n,a,b)
  
 endfunction
 
-function [xk error] = cuad_gaussiana(f,n,a,b)
+function [I cota] = cuad_gaussiana(f,n,a,b)
+  
+  #{
+  Esta funcion aproxima el valor para la integral definida de f en el 
+  intervalo [a,b] y calcula la cota de cota que se genera al realizar la aproximacion
+  utilizando el metodo de la Cuadratura Gaussiana.
+
+  Sintaxis:  [I cota] = cuad_gaussiana(f,n,a,b)
+
+  Parametros Iniciales: 
+      f : una cadena de caracteres (string) que representa
+          a la funcion f, la cual es continua e integrable en el
+          intervalo [a,b].
+      n: orden de la cuadratura gaussiana.
+      a : limite inferior del intervalo sobre el cual se aplica
+          la integral definida.
+      b : limite superior del intervalo sobre el cual se aplica
+          la integral definida.
+          
+  Parametros de Salida: 
+      aprox :  aproximacion de la funcion en el intervalo 
+          indicado.
+      cota : cota del cota de la aproximacion.
+  #}
   
   pkg load symbolic
   warning('off','all');
   
   syms x;
   
-  xk = 0;
-  error = 0;
+  I = 0;
+  cota = 0;
 
   fs=sym(f);
   y=((b-a)*x+(b+a))/2;
@@ -31,10 +54,31 @@ function [xk error] = cuad_gaussiana(f,n,a,b)
   
   for i=1:n  
 
-    xk += w(i)*gn(x(i)); % Cuadratura gaussiana
+    I += w(i)*gn(x(i)); % Cuadratura gaussiana
     
   endfor
   
+  
+  if n == 2
+
+    % 1. Calculo de la cuarta derivada.
+    f2_s = abs(diff(gs, 4));   # d4 simbolica.
+    f2_n = matlabFunction(f2_s);   # d2 numerica.
+
+    % 2. Calculo de las funciones auxiliares: 
+    % min{ -f } en [a,b] -> max{ f } en [a,b].     
+    fs_aux = -1*abs(f2_s);   # -f simbolica.
+    fn_aux = matlabFunction(fs_aux);   # -f numerica.
+
+    % 3. Calculo de alpha_max.
+    x_max = fminbnd(fn_aux, -1, 1);   # maximo.
+    alpha = f2_n(x_max);   # alpha max.
+
+    % 4. Calculo de la cota de cota.
+    cota=alpha/135;  # cota.
+    
+  end  
+
   
 end
 
