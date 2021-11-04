@@ -1,17 +1,16 @@
-function ejemplo_predictor_corrector
+function ejemplo_adam_bashford_4
 
   clc; clear; close all
   warning ("off")
-  a=0; b=5;
+  a=2; b=4;
   num_pt=11;
-  f = 'y-x^2+1';
-  
-  [xk yk p] = predictor_corrector(f,a,b,num_pt)
+  f='1+(x-y)^2';
+  [xk yk p] = adam_bashford_4(f,a,b,num_pt)
   
   
 end
 
-function [xk yk p] = predictor_corrector(f,a,b,num_pt)
+function [xk yk p] = adam_bashford_4(f,a,b,num_pt)
   
 %  Metodo predictor corrector
 %
@@ -33,20 +32,18 @@ function [xk yk p] = predictor_corrector(f,a,b,num_pt)
 %         del metodo de Lagrange.
   pkg load symbolic
   f=matlabFunction(sym(f));
-  
-  h=(b-a)/(num_pt-1);
+  h=(b-a)/(num_pt-1)
   xk=a:h:b;
-  yk=[0.5];
-  zv=[0.5];
+  yk=[1 1.191];
 
-  for n=1:num_pt-1  
-    
-    zv(n+1) = yk(n)+h*f(xk(n),yk(n));
-    yk(n+1)=yk(n)+(h/2)*f(xk(n),yk(n) +f(xk(n+1),zv(n+1)));
+  for n=2:num_pt-1  
+
+    yk(n+1)=yk(n)+(h/2)*(3*f(xk(n),yk(n)) - f(xk(n-1),yk(n-1)));
     
   end
   
-  p = lagrange(xk,yk);
+  #p = lagrange(xk,yk);
+  p = 0
   hold on
   plot(xk,yk,'r')
   title('Metodo del predictor corrector')
