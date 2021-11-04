@@ -37,15 +37,13 @@ def euler(f, a, b, num_pt):
     for n in range(num_pt-1):
         yv.append(yv[n]+h*f(xv[n], yv[n]))
 
-    p_ordenados = []
-
-    print("Pares ordenados (xk,yk):")
-
-    for n in range(len(xv)):
-        p_ordenados.append((xv[n], yv[n]))
-        print(p_ordenados[n])
-
     p = lagrange(xv, yv)
+    
+    print("xk:")
+    print(xv)
+    print("yk")
+    print(yv)
+
     print("\n➤  El polinomio de interpolacion resultante es:\n")
     sp.pprint(p)
 
@@ -58,7 +56,7 @@ def euler(f, a, b, num_pt):
     plt.show()
 
     # Se retorna una lista con los pares ordenados (xk,yk) y el polinomio de interpolacion
-    return p_ordenados, p
+    return [xv, yv, p]
 
 
 def lagrange(xk, yk):
@@ -112,3 +110,4 @@ b = 5
 num_pt = 11
 
 euler(f, a, b, num_pt)
+
