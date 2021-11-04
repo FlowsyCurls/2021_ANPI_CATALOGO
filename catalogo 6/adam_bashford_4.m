@@ -12,12 +12,12 @@ end
 
 function [xk yk p] = adam_bashford_4(f,a,b,num_pt)
   
-%  Metodo predictor corrector
+%  Metodo adam bashford de cuatro pasos
 %
-%  Esta funcion utiliza el metodo del predictor corrector para la solucion de 
+%  Esta funcion utiliza el metodo del adam bashford 4 para la solucion de 
 %  ecuaciones diferenciales ordinarias.
 %
-%  Sintaxis: euler(f, a, b, num_pt)
+%  Sintaxis: [xk yk p] = adam_bashford_4(f,a,b,num_pt)
 %
 %  Parametros Iniciales: 
 %      f : ecuacion diferencial ordinaria
@@ -46,7 +46,7 @@ function [xk yk p] = adam_bashford_4(f,a,b,num_pt)
   p = 0
   hold on
   plot(xk,yk,'r')
-  title('Metodo del predictor corrector')
+  title('Metodo de adam bashford 4')
   xlabel('xk')
   ylabel('yk')
   grid on
