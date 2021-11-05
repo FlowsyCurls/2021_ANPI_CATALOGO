@@ -5,13 +5,22 @@ function ejemplo_predictor_corrector
   a=0; b=5;
   num_pt=11;
   f = 'y-x^2+1';
+  y0 = 0.5;
   
-  [xk yk p] = predictor_corrector(f,a,b,num_pt)
+  [xk yk p] = predictor_corrector(f,a,b,y0,num_pt)
+  
+  # Prueba de ejemplo (descomentar para comparar)
+  #fs = @(x) (x+1).^2-0.5*exp(x);
+  #xg = a:0.001:b;
+  #yg = fs(xg);
+  
+  #hold on;
+  #plot(xg,yg,'g');
   
   
 end
 
-function [xk yk p] = predictor_corrector(f,a,b,num_pt)
+function [xk yk p] = predictor_corrector(f,a,b,y0,num_pt)
   
 %  Metodo predictor corrector
 %
@@ -36,8 +45,8 @@ function [xk yk p] = predictor_corrector(f,a,b,num_pt)
   
   h=(b-a)/(num_pt-1);
   xk=a:h:b;
-  yk=[0.5];
-  zv=[0.5];
+  yk=[y0];
+  zv=[y0];
 
   for n=1:num_pt-1  
     

@@ -3,7 +3,7 @@ import numpy as np
 import sympy as sp
 
 
-def runge_kutta_4(f, a, b, num_pt):
+def runge_kutta_4(f, a, b, y0, num_pt):
     """
     Metodo de runge kutta de orden 4
 
@@ -32,7 +32,7 @@ def runge_kutta_4(f, a, b, num_pt):
     h = (b-a)/(num_pt-1)
 
     xv = np.arange(a, b+h, h)
-    yv = [1]
+    yv = [y0]
 
     for n in range(num_pt-1):
 
@@ -58,6 +58,13 @@ def runge_kutta_4(f, a, b, num_pt):
     graf.set_ylabel('yk')
     graf.set_title('Metodo de runge_kutta_4 (Grafica de polinomio de interpolacion)')
     graf.grid(True)
+    
+    # Prueba de ejemplo (descomentar para comparar)
+    #fs = sp.lambdify(x, '(4-3*exp(-x^2))^(1/2)')
+    #xg = np.arange(a,b,0.001)
+    #yg = fs(xg)
+    #graf.plot(xg, yg, 'g')
+
     plt.show()
 
     # Se retorna una lista con los pares ordenados (xk,yk) y el polinomio de interpolacion
@@ -113,5 +120,6 @@ f = "-x*y+(4*x)/y"
 a = 0
 b = 1
 num_pt = 11
+y0 = 1;
 
-runge_kutta_4(f, a, b, num_pt)
+runge_kutta_4(f, a, b, y0, num_pt)

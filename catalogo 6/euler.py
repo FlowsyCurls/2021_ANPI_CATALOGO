@@ -3,7 +3,7 @@ import numpy as np
 import sympy as sp
 
 
-def euler(f, a, b, num_pt):
+def euler(f, a, b, y0, num_pt):
     """
     Metodo de euler
 
@@ -32,7 +32,7 @@ def euler(f, a, b, num_pt):
     h = (b-a)/(num_pt-1)
 
     xv = np.arange(a, b+h, h)
-    yv = [0.5]
+    yv = [y0]
 
     for n in range(num_pt-1):
         yv.append(yv[n]+h*f(xv[n], yv[n]))
@@ -53,6 +53,13 @@ def euler(f, a, b, num_pt):
     graf.set_ylabel('yk')
     graf.set_title('Metodo de euler (Grafica de polinomio de interpolacion)')
     graf.grid(True)
+
+    # Prueba de ejemplo (descomentar para comparar)
+    #fs = sp.lambdify(x, '(x+1)^2-0.5*exp(x)')
+    #xg = np.arange(a,b,0.001)
+    #yg = fs(xg)
+    #graf.plot(xg, yg, 'g')
+
     plt.show()
 
     # Se retorna una lista con los pares ordenados (xk,yk) y el polinomio de interpolacion
@@ -108,6 +115,7 @@ f = "y-x^2+1"
 a = 0
 b = 5
 num_pt = 11
+y0 = 0.5
 
-euler(f, a, b, num_pt)
+euler(f, a, b,y0, num_pt)
 
