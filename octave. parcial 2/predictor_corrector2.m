@@ -1,41 +1,47 @@
 # Ejemplo
 function ejemplo
      # Previos
-     clc; clear;  close all; 
+     clc; clear;  close all;  warning ("off");
      pkg load symbolic
 
      # Parametros
      a=0; b=5;
-     num_pt=11;
-     
-     # Valor inicial de y0
-     global y0 
-     y0 = 0.5;
+     N=11;
+     y0 = 0.5;     
      
      # Funcion a derivar
      f=@(x,y) y-x.^2+1;
-     # Solucion analitica
-     global df
-     df=@(x) (x+1).^2-0.5*exp(x);
      
+     # Aproximacion.
+     [pares_ordenados, pol]=predictor_corrector(f, a, b, y0, N)
+          
+     # 6. Conociendo la solucion analitica se realiza la 
+     #  comparacion para ver el error graficamente.
+     
+     # Solucion analitica (wolfram alpha)
+     df=@(x) (x+1).^2-0.5*exp(x);
+     %Graficar la solucion
+     xs=a:0.0001:b;
+     ys=df(xs);
+     plot(xs,ys,'g')
 
-
-     [pares_ordenados, pol]=predictor_corrector(f, a, b, num_pt)
 endfunction
 
-function [pares_ordenados, pol] = predictor_corrector(f, a, b, num_pt)
+function [pares_ordenados, pol] = predictor_corrector(f, a, b, y0, N)
      #{
     Esta funcion utiliza el metodo Predictor Corrector para aproximar
     la solucion de ecuaciones diferenciales ordinarias.
     
-    Sintaxis:  predictor_corrector(f, a, b, num_pt, y0)
+    Sintaxis:  predictor_corrector(f, a, b, yo, N)
     
     Parametros Iniciales: 
         f : una cadena de caracteres (string) que representa
             a la ecuacion diferencial ordinaria.
         a : limite inferior del intervalo.
         b : limite superior del intervalo.
-        num_pt: cantidad de puntos.
+        y0 : valor inicial de y correspondiente a x0.
+        N: cantidad de puntos.
+        
         
     Parametros de Salida: 
         pares_ordenados: vector de pares ordenados (xk,yk)
@@ -44,14 +50,13 @@ function [pares_ordenados, pol] = predictor_corrector(f, a, b, num_pt)
     #}
     
      # 1. Calculo de h.
-     h = (b-a)/(num_pt-1);
+     h = (b-a)/(N-1);
 
      # 2. Calculo de los xk y yk.
      xk = a:h:b;
-     global y0
      yk = [y0];
      z = [];
-     for n=1:num_pt-1
+     for n=1:N-1
           # 2.1 Calculo del Predictor (euler).
           z(n+1) = yk(n) + h * f(xk(n), yk(n));
           # 2.1 Calculo del Corrector.
@@ -84,13 +89,7 @@ function [pares_ordenados, pol] = predictor_corrector(f, a, b, num_pt)
      grid on
      
      
-     # 6. Conociendo la solucion analitica se realiza la 
-     #  comparacion para ver el error graficamente.
-     global df
-     %Graficar la solucion
-     xs=a:0.0001:b;
-     ys=df(xs);
-     plot(xs,ys,'b')
+
 endfunction
 
 
