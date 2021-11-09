@@ -73,7 +73,7 @@ function [valor, vector, k, err] = potencia(A, x0, iterMax, tol)
     valor  = ck;
     vector = xk';
     err = error(end);
-    error
+    
 
     % Graficar
     plot(0:length(error)-1,error,'g','LineWidth',1)
