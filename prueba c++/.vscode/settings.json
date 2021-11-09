@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.py": "python",
+        "*.txt": "bibtex-style",
+        "armadillo": "cpp",
+        "iostream": "cpp",
+        "random": "cpp",
+        "complex": "cpp",
+        "vector": "cpp",
+        "tuple": "cpp"
+    }
+}
