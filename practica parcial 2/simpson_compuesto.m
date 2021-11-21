@@ -4,7 +4,7 @@ function ejemplo
   a = 2;
   b = 5;
   N = 7;
-  [aprox error] = simpson_compuesto(f, a, b, N);
+  [aprox error] = simpson_compuesto(f, a, b, N)
   
 end
 
@@ -32,30 +32,27 @@ function [aprox error] = simpson_compuesto(f,a,b,N)
   suma_par
   suma_impar
   
-  aprox = (h/3)*(fs(x0)+2*suma_par+4*suma_impar+fs(b))
+  aprox = (h/3)*(fs(x0)+2*suma_par+4*suma_impar+fs(b));
   
   # Cota del error.
   
   # 1. Calculo de la cuarta derivada.g
   
-  #f4_s = abs(diff(sym(f), 4))   ## d4 simbolica. 
-  
-  ## malo de aqui en adelante xd
-##  f4_n = lambdify(x, f4_s)   ## d4 numerica.
-##
-##  # 2. Calculo de las funciones auxiliares:
-##  # min{ -f } en [a,b] -> max{ f } en [a,b].
-##  fs_aux = -1*abs(f4_s)   ## -f simbolica.
-##  fn_aux = lambdify(x, fs_aux)   ## -f numerica.
-##
-##  # 3. Calculo de alpha_max.`
-##  x_max = optimize.fminbound(fn_aux, a, b)   ## maximo.
-##  alpha = f4_n(x_max)   ## alpha.
-##
-##  # 4. Calculo de la cota de error.
-##  numerador = (b-a)*h^4
-##  error = (numerador/180)*alpha   ## cota.
-  error = 0
+  f4_s = abs(diff(sym(f), 4));   ## d4 simbolica. 
+  f4_n = matlabFunction(f4_s);   ## d4 numerica.
+
+  # 2. Calculo de las funciones auxiliares:
+  # min{ -f } en [a,b] -> max{ f } en [a,b].
+  fs_aux = -1*abs(f4_s);   ## -f simbolica.
+  fn_aux = matlabFunction(fs_aux);   ## -f numerica.
+
+  # 3. Calculo de alpha_max.`
+  x_max = fminbnd(fn_aux, a, b);   ## maximo.
+  alpha = f4_n(x_max);   ## alpha.
+
+  # 4. Calculo de la cota de error.
+  numerador = (b-a)*h^4;
+  error = (numerador/180)*alpha;   ## cota.
   
   
 end
