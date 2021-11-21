@@ -6,10 +6,10 @@ from scipy import optimize
 # Ejemplo
 def ejemplo():
     # Parametros
-    f = 'ln(x)'
-    a = 2
-    b = 5
-    N = 7
+    f = '2^x'
+    a = 0
+    b = 1
+    N = 9
     aprox, error =  simpson_compuesto(f, a, b, N)
 
     print("\n\n ➤   METODO DE SIMPSON COMPUESTO\n")
@@ -46,17 +46,25 @@ def simpson_compuesto(f, a, b, N):
     x = sp.Symbol('x')
     f = sp.sympify(f)
     h = (b - a) / (N - 1)
+    print(h)
+    print()
     suma_par = 0
     suma_impar = 0
     x0 = a
     i = 1
     while i < N - 1:
         xi = x0 + i * h
+        print(xi)
         if i % 2 == 0:  # si es par
             suma_par += sp.N(f.subs(x, xi))
         else:  # si es impar
             suma_impar += sp.N(f.subs(x, xi))
         i += 1
+
+    print(suma_par)
+    print(suma_impar)
+
+
 
     I = (h / 3) * (sp.N(f.subs(x, x0)) + 2 * suma_par + 4 * suma_impar + sp.N(f.subs(x, b)))
 
@@ -65,8 +73,10 @@ def simpson_compuesto(f, a, b, N):
     
     # 1. Calculo de la cuarta derivada.
     f4_s = sp.Abs(f.diff(x, 4))   ## d4 simbolica.
+    print(f4_s)
     f4_n = sp.lambdify(x, f4_s)   ## d4 numerica.
-    
+    print(f4_n)
+
     # 2. Calculo de las funciones auxiliares:
     # min{ -f } en [a,b] -> max{ f } en [a,b].
     fs_aux = -1*sp.Abs(f4_s)   ## -f simbolica.
