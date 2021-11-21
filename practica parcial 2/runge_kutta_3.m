@@ -45,5 +45,7 @@ function [x_v,y_v]=runge_kutta_3(a,b,y0,m)
   xlabel('x_v')
   ylabel('y_v')
   grid on
+  stem(x_v,y_v,'LineStyle','None', 'r')  # Para ver cada punto.
+
   
 end
