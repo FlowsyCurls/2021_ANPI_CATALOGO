@@ -6,10 +6,10 @@ function ejemplo
      warning('off','all');
      
      # Parametros
-     f='log(x)';
-     a=2;
-     b=5;
-     N = 500;
+     f='2^x';
+     a=0;
+     b=1;
+     N=28296.52639;
      [aprox, error]=trapecio_compuesto(f, N, a, b);
      
      printf(

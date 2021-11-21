@@ -1,9 +1,9 @@
 function ejemplo
-  clc;clear;warning off;
-  f = 'ln(x)';
-  a = 2;
-  b = 5;
-  N = 7;
+  clc;clear;warning('off','all');
+  f = '2^x';
+  a = 0;
+  b = 1;
+  N = 9;
   [aprox error] = simpson_compuesto(f, a, b, N)
   
 end
